@@ -41,13 +41,26 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <upstream.version>6.0.4</upstream.version>
-        <upstream.url>https://releases.flowplayer.org/${upstream.version}</upstream.url>
-        <destDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/${upstream.version}</destDir>
+        <upstream.url>https://releases.flowplayer.org/${version.unsnapshot}</upstream.url>
+        <destDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/${project.version}</destDir>
     </properties>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>com.jamesward</groupId>
+                <artifactId>unsnapshot-maven-plugin</artifactId>
+                <version>0.2</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>unsnapshot</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>wagon-maven-plugin</artifactId>
@@ -60,7 +73,7 @@
                         </goals>
                         <configuration>
                             <url>${upstream.url}</url>
-                            <fromFile>flowplayer-${upstream.version}.zip</fromFile>
+                            <fromFile>flowplayer-${version.unsnapshot}.zip</fromFile>
                             <toFile>${project.build.directory}/${project.artifactId}.zip</toFile>
                         </configuration>
                     </execution>
